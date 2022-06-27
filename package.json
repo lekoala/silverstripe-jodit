@@ -1,0 +1,14 @@
+{
+  "name": "lekoala-silverstripe-jodit",
+  "description": "Silverstripe Jodit Field",
+  "author": "LeKoala",
+  "license": "MIT",
+  "dependencies": {
+    "jodit": "^3.18.9"
+  },
+  "scripts": {
+    "cdn": "php bin/download-cdn-files.php",
+    "build": "esbuild --bundle --minify --format=iife client/custom-jodit.js --outfile=client/custom-jodit.min.js"
+  },
+  "keywords": []
+}
