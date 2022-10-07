@@ -2,12 +2,20 @@
 
 namespace LeKoala\Jodit;
 
+use LeKoala\ModularBehaviour\ModularBehaviour;
 use SilverStripe\View\Requirements;
 use SilverStripe\Forms\HTMLEditor\HTMLEditorField;
 use SilverStripe\Core\Manifest\ModuleResourceLoader;
 
 class JoditEditor extends HTMLEditorField
 {
+    use ModularBehaviour;
+
+    /**
+     * @config
+     */
+    private static bool $default_lazy_init = true;
+
     /**
      * @config
      */
@@ -21,7 +29,9 @@ class JoditEditor extends HTMLEditorField
     /**
      * @config
      */
-    private static string $version = '3.18.9';
+    private static string $version = '3.20';
+
+    protected $lazyInit = true;
 
     /**
      * @param string $fieldName
@@ -32,11 +42,30 @@ class JoditEditor extends HTMLEditorField
     public function __construct($name, $title = null, $value = null, $config = null)
     {
         parent::__construct($name, $title, $value);
+        $this->setLazyInit(self::config()->default_lazy_init ?? true);
 
         if (!$config) {
             $this->editorConfig = new JoditEditorConfig;
         }
     }
+
+    /**
+     * Get the value of lazyInit
+     */
+    public function getLazyInit(): bool
+    {
+        return $this->lazyInit;
+    }
+
+    /**
+     * Set the value of lazyInit
+     */
+    public function setLazyInit(bool $lazyInit): self
+    {
+        $this->lazyInit = $lazyInit;
+        return $this;
+    }
+
 
     public static function requirements(): void
     {
@@ -51,8 +80,31 @@ class JoditEditor extends HTMLEditorField
         }
 
         Requirements::javascript("$baseDir/jodit.es2018.min.js");
-        Requirements::javascript('lekoala/silverstripe-jodit:client/JoditField.js');
+        // Requirements::javascript('lekoala/silverstripe-jodit:client/JoditField.js');
         Requirements::css("$baseDir/jodit.es2018.min.css");
+    }
+
+    public function JsonOptions(): string
+    {
+        return $this->getEditorConfig()->getAttributes()['data-config'];
+    }
+
+    public function getModularConfigName()
+    {
+        return str_replace('-', '_', $this->ID()) . '_config';
+    }
+
+    public function getModularConfig()
+    {
+        $JsonOptions = $this->JsonOptions();
+        $configName = $this->getModularConfigName();
+        $script = "var $configName = $JsonOptions";
+        return $script;
+    }
+
+    public function getModularName()
+    {
+        return 'Jodit.make';
     }
 
     public function Field($properties = [])
@@ -60,7 +112,10 @@ class JoditEditor extends HTMLEditorField
         if (self::config()->enable_requirements) {
             self::requirements();
         }
+        if ($this->lazyInit) {
+            $this->setModularLazy($this->lazyInit);
+        }
         $this->getEditorConfig()->init();
-        return parent::Field($properties);
+        return $this->getModularField($properties);
     }
 }

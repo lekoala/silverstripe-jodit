@@ -5,8 +5,8 @@ if (php_sapi_name() != "cli") {
 }
 
 $files = [];
-$files[] = "https://cdn.jsdelivr.net/npm/jodit@3.18.9/build/jodit.es2018.min.js";
-$files[] = "https://cdn.jsdelivr.net/npm/jodit@3.18.9/build/jodit.es2018.min.css";
+$files[] = "https://cdn.jsdelivr.net/npm/jodit@3.20/build/jodit.es2018.min.js";
+$files[] = "https://cdn.jsdelivr.net/npm/jodit@3.20/build/jodit.es2018.min.css";
 
 // $bundleCss = '';
 // $bundleJs = '';
@@ -15,7 +15,7 @@ $baseDir = dirname(__DIR__);
 $dest = $baseDir . "/client/cdn";
 
 foreach ($files as $file) {
-    $baseFile = str_replace("https://cdn.jsdelivr.net/npm/jodit@3.18.9/build/", "", $file);
+    $baseFile = str_replace("https://cdn.jsdelivr.net/npm/jodit@3.20/build/", "", $file);
     $parts = explode("/", $baseFile);
     $destFolder = $dest . "/" . dirname($baseFile);
     if (!is_dir($destFolder)) {

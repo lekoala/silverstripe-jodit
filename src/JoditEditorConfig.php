@@ -35,6 +35,12 @@ class JoditEditorConfig extends HTMLEditorConfig implements i18nEntityProvider
     protected $settings = [
         'hidePoweredByJodit' => true,
         'toolbarAdaptive' => false,
+        "showCharsCounter" => false,
+        "showWordsCounter" => false,
+        "showXPathInStatusbar" => false,
+        "uploader" => [
+            "insertImageAsBase64URI" => true
+        ],
     ];
 
     /**
