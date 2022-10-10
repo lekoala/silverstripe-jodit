@@ -80,7 +80,6 @@ class JoditEditor extends HTMLEditorField
         }
 
         Requirements::javascript("$baseDir/jodit.es2018.min.js");
-        // Requirements::javascript('lekoala/silverstripe-jodit:client/JoditField.js');
         Requirements::css("$baseDir/jodit.es2018.min.css");
     }
 
