@@ -29,7 +29,7 @@ class JoditEditor extends HTMLEditorField
     /**
      * @config
      */
-    private static string $version = '3.20';
+    private static string $version = '3.24';
 
     protected $lazyInit = true;
 
